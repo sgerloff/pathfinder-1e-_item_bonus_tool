@@ -3,6 +3,7 @@ from Classes.playerCharacter import PlayerCharacter
 
 
 class NonPlayerCharacter(PlayerCharacter):
+    heroic = False
     _networthPerLevel = {
         1: 260,
         2: 390,
@@ -98,6 +99,12 @@ class NonPlayerCharacter(PlayerCharacter):
         20: 35000,
         21: 44000
     }
+
+    def getEffectiveLevel(self):
+        effectiveLevel = self.level
+        if self.heroic == True:
+            effectiveLevel += 1
+        return effectiveLevel
 
     def getProtectionBudget(self):
         return self._protectionBudgetPerLevel.get(self.level)

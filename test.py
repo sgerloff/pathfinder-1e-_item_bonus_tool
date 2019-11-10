@@ -21,5 +21,6 @@ pb.getOptimalBonusSet(pc)
 
 print("NPC:")
 npc = NonPlayerCharacter(9)
+npc.heroic=True
 wb.getOptimalBonus(npc)
 pb.getOptimalBonusSet(npc)
