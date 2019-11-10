@@ -3,7 +3,6 @@ from Classes.playerCharacter import PlayerCharacter
 
 
 class ProtectionBonuses:
-
     ARMOR_MASTERWORK = 150
     ARMOR_BONUS_FACTOR = 1000
     SHIELD_BONUS_FACTOR = 1000
@@ -22,13 +21,16 @@ class ProtectionBonuses:
     def getPrice(self, bonus, factor):
         return bonus * bonus * factor
 
-    def getMaxBonus(self, protectionBudget):
+    def getBonusTreshold(self, character):
+        return math.floor(math.sqrt(character.level))
+
+    def getMaxBonus(self, protectionBudget, threshold):
         maxBonus = -1
-        for armorBonus in range(0, 5, 1):
-            for naturalArmorBonus in range(0, 5, 1):
-                for deflectionBonus in range(0, 5, 1):
-                    for shieldBonus in range(0, 5, 1):
-                        for otherBonus in range(0, 5, 1):
+        for armorBonus in range(0, threshold, 1):
+            for naturalArmorBonus in range(0, threshold, 1):
+                for deflectionBonus in range(0, threshold, 1):
+                    for shieldBonus in range(0, threshold, 1):
+                        for otherBonus in range(0, threshold, 1):
                             if self.getCostOfBonuses(armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus,
                                                      otherBonus) < protectionBudget:
                                 totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus,
@@ -79,14 +81,14 @@ class ProtectionBonuses:
 
         return armorBonus + naturalArmorBonus + deflectionBonus + shieldBonus + otherBonus
 
-    def getMaxSurplus(self, protectionBudget):
+    def getMaxSurplus(self, protectionBudget, threshold):
         maxSurplus = -1
-        maxBonus = self.getMaxBonus(protectionBudget)
-        for armorBonus in range(0, 5, 1):
-            for naturalArmorBonus in range(0, 5, 1):
-                for deflectionBonus in range(0, 5, 1):
-                    for shieldBonus in range(0, 5, 1):
-                        for otherBonus in range(0, 5, 1):
+        maxBonus = self.getMaxBonus(protectionBudget, threshold)
+        for armorBonus in range(0, threshold, 1):
+            for naturalArmorBonus in range(0, threshold, 1):
+                for deflectionBonus in range(0, threshold, 1):
+                    for shieldBonus in range(0, threshold, 1):
+                        for otherBonus in range(0, threshold, 1):
                             totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus,
                                                             otherBonus)
                             if totalBonus == maxBonus:
@@ -105,7 +107,7 @@ class ProtectionBonuses:
             saveCost = self.getPrice(saveBonus, self.SAVE_RESISTANCE_BONUS_FACTOR)
             maxCost = character.getSaveBudget()
             if saveCost > maxCost:
-                saveBonus = math.floor(math.sqrt(maxCost/self.SAVE_RESISTANCE_BONUS_FACTOR))
+                saveBonus = math.floor(math.sqrt(maxCost / self.SAVE_RESISTANCE_BONUS_FACTOR))
         else:
             saveBonus = 0
         return saveBonus
@@ -113,20 +115,20 @@ class ProtectionBonuses:
     def getOptimalBonusSet(self, character):
         saveResistanceBonus = self.getResistanceBonus(character)
         protectionBudget = character.getProtectionBudget() - self.getPrice(saveResistanceBonus,
-                                                                                    self.SAVE_RESISTANCE_BONUS_FACTOR)
-
-        maxBonus = self.getMaxBonus(protectionBudget)
-        maxSurplus = self.getMaxSurplus(protectionBudget)
+                                                                           self.SAVE_RESISTANCE_BONUS_FACTOR)
+        threshold = 6
+        maxBonus = self.getMaxBonus(protectionBudget, threshold)
+        maxSurplus = self.getMaxSurplus(protectionBudget, threshold)
         maxArmorBonus = 0
         maxNaturalArmorBonus = 0
         maxDeflectionBonus = 0
         maxShieldBonus = 0
         maxOtherBonus = 0
-        for armorBonus in range(0, 5, 1):
-            for naturalArmorBonus in range(0, 5, 1):
-                for deflectionBonus in range(0, 5, 1):
-                    for shieldBonus in range(0, 5, 1):
-                        for otherBonus in range(0, 5, 1):
+        for armorBonus in range(0, threshold, 1):
+            for naturalArmorBonus in range(0, threshold, 1):
+                for deflectionBonus in range(0, threshold, 1):
+                    for shieldBonus in range(0, threshold, 1):
+                        for otherBonus in range(0, threshold, 1):
                             totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus,
                                                             otherBonus)
                             if totalBonus == maxBonus:

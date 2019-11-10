@@ -114,3 +114,6 @@ class NonPlayerCharacter(PlayerCharacter):
 
     def getWeaponBudget(self):
         return self._weaponBudgetPerLevel.get(self.level)
+
+    def getMagicBudget(self):
+        return self._magicBudgetPerLevel.get(self.level)
