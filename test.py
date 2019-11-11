@@ -17,13 +17,18 @@ pb.other = True
 ab = AttributeBonuses()
 
 print("PC:")
-pc = PlayerCharacter(9)
+pc = PlayerCharacter(8)
 wb.getOptimalBonus(pc)
+print("")
 pb.getOptimalBonusSet(pc)
+print("")
 ab.getOptimalBonusSet(pc)
 
-# print("NPC:")
-# npc = NonPlayerCharacter(9)
-# npc.heroic = True
-# wb.getOptimalBonus(npc)
-# pb.getOptimalBonusSet(npc)
+print("\n\nNPC:")
+npc = NonPlayerCharacter(13)
+npc.heroic = True
+wb.getOptimalBonus(npc)
+print("")
+pb.getOptimalBonusSet(npc)
+print("")
+ab.getOptimalBonusSet(npc)

@@ -18,4 +18,4 @@ class WeaponBonus:
     def getOptimalBonus(self, character):
         maxBonus = self.getMaxWeaponBonus(character)
         maxSurplus = self.getMaxSurplus(character)
-        print("Waffenbonus: +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(maxBonus, maxSurplus))
+        print("Waffenbonus:    +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(maxBonus, maxSurplus))

@@ -148,8 +148,8 @@ class ProtectionBonuses:
                                         maxShieldBonus = shieldBonus
                                     if self.other == True:
                                         maxOtherBonus = otherBonus
-        print("Bonus auf RK: +{0:<2d}   Überschüssiges Gold: {1:<10d}".format(maxBonus, math.floor(maxSurplus)))
+        print("Bonus auf RK:   +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(maxBonus, math.floor(maxSurplus)))
         print("Resistenzbonus: +{0:<2d}".format(saveResistanceBonus))
-        print("Rüstungsbonus: +{0:<2d}   Schildbonus: +{1:<2d}".format(maxArmorBonus, maxShieldBonus))
-        print("Natürlicher Bonus: +{0:<2d}   Ablenkbonus: +{1:<2d}".format(maxNaturalArmorBonus, maxDeflectionBonus))
-        print("Andere Boni: +{0:<2d}".format(maxOtherBonus))
+        print("Rüstungsbonus:  +{0:<2d}    Schildbonus: +{1:<2d}".format(maxArmorBonus, maxShieldBonus))
+        print("Natürlicher RB: +{0:<2d}    Ablenkbonus: +{1:<2d}".format(maxNaturalArmorBonus, maxDeflectionBonus))
+        print("Anderer Bonus:  +{0:<2d}".format(maxOtherBonus))
