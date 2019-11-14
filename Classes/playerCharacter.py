@@ -1,3 +1,5 @@
+import math
+
 class PlayerCharacter:
     level = -1
     networth = -1
@@ -35,6 +37,9 @@ class PlayerCharacter:
     def setNetworthByLevel(self, level):
         self.level = level
         self.networth = self._networthPerLevel.get(level, "Error: Invalid level (2-20)")
+
+    def getAttributeBonus(self, attribute):
+        return math.floor(attribute/2)-5
 
     def getProtectionBudget(self):
         return self.PROTECTION_RATIO * self.networth

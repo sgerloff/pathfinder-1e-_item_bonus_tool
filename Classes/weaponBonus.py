@@ -7,8 +7,12 @@ class WeaponBonus:
     WEAPON_BONUS_FACTOR = 2000
 
     def getMaxWeaponBonus(self, character):
-        weaponBudget = character.getWeaponBudget() - self.WEAPON_MASTERWORK
-        return math.floor(math.sqrt(weaponBudget / self.WEAPON_BONUS_FACTOR))
+        weaponBudget = character.getWeaponBudget()
+        if weaponBudget > self.WEAPON_MASTERWORK:
+            weaponBudget = character.getWeaponBudget() - self.WEAPON_MASTERWORK
+            return math.floor(math.sqrt(weaponBudget / self.WEAPON_BONUS_FACTOR))
+        else:
+            return 0
 
     def getMaxSurplus(self, character):
         weaponBudget = character.getWeaponBudget() - self.WEAPON_MASTERWORK

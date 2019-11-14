@@ -25,7 +25,7 @@ class ProtectionBonuses:
         return math.floor(math.sqrt(character.level))
 
     def getMaxBonus(self, protectionBudget, threshold):
-        maxBonus = -1
+        maxBonus = 0
         for armorBonus in range(0, threshold, 1):
             for naturalArmorBonus in range(0, threshold, 1):
                 for deflectionBonus in range(0, threshold, 1):
@@ -153,3 +153,14 @@ class ProtectionBonuses:
         print("Rüstungsbonus:  +{0:<2d}    Schildbonus: +{1:<2d}".format(maxArmorBonus, maxShieldBonus))
         print("Natürlicher RB: +{0:<2d}    Ablenkbonus: +{1:<2d}".format(maxNaturalArmorBonus, maxDeflectionBonus))
         print("Anderer Bonus:  +{0:<2d}".format(maxOtherBonus))
+
+        optimalBonus = {
+            "total": maxBonus,
+            "armor": maxArmorBonus,
+            "shield": maxShieldBonus,
+            "natural": maxNaturalArmorBonus,
+            "deflection": maxDeflectionBonus,
+            "other": maxOtherBonus,
+            "surplus": maxSurplus
+        }
+        return optimalBonus
