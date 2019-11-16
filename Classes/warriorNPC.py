@@ -68,7 +68,8 @@ class WarriorNPC(NonPlayerCharacter):
         self._protectionBonus.deflection = True
         self._protectionBonus.other = False
         self._protectionBonus.save = True
-        self._protectionBonus.setMaxBoni(self)
+        self._protectionBonus.setForCharacter(self)
+        self._weaponBonus.setForCharacter(self)
 
     def addFavoriteAttributeBonus(self):
         bonus = math.floor(self.level / 4.)
@@ -161,10 +162,10 @@ class WarriorNPC(NonPlayerCharacter):
         return self.level
 
     def getMeleeAttackBonus(self):
-        return self.getAttributeBonus(self.getStrength()) + self._weaponBonus.getMaxWeaponBonus(self)
+        return self.getAttributeBonus(self.getStrength()) + self._weaponBonus.maxBonus
 
     def getRangeAttackBonus(self):
-        return self.getAttributeBonus(self.getDexterity()) + self._weaponBonus.getMaxWeaponBonus(self)
+        return self.getAttributeBonus(self.getDexterity()) + self._weaponBonus.maxBonus
 
     def getArmorClass(self):
         self._protectionBonus.deflection = True

@@ -40,7 +40,7 @@ class ProtectionBonuses:
         self.maxDeflectionBonus = 0
         self.maxOtherBonus = 0
 
-    def setMaxBoni(self, character):
+    def setForCharacter(self, character):
         self.__reset__()
         self._setResistanceBonus(character)
         protectionBudget = character.getProtectionBudget() - self.getPrice(self.saveBonus,

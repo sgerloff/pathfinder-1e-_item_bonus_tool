@@ -3,23 +3,39 @@ from Classes.playerCharacter import PlayerCharacter
 
 
 class WeaponBonus:
-    WEAPON_MASTERWORK = 300
-    WEAPON_BONUS_FACTOR = 2000
+    __WEAPON_MASTERWORK = 300
+    __WEAPON_BONUS_FACTOR = 2000
 
-    def getMaxWeaponBonus(self, character):
+    maxBonus = 0
+    maxSurplus = 0
+
+    def __init__(self):
+        self.__reset__()
+
+    def __reset__(self):
+        self.maxBonus = 0
+        self.maxSurplus = 0
+
+    def setForCharacter(self, character):
+        self.__reset__()
+        self._setMaxBonus(character)
+        self._setMaxSurplus(character)
+
+    def _setMaxBonus(self, character):
+        self.__reset__()
         weaponBudget = character.getWeaponBudget()
-        if weaponBudget > self.WEAPON_MASTERWORK:
-            weaponBudget = character.getWeaponBudget() - self.WEAPON_MASTERWORK
-            return math.floor(math.sqrt(weaponBudget / self.WEAPON_BONUS_FACTOR))
+        if weaponBudget > self.__WEAPON_MASTERWORK:
+            weaponBudget = self._getWeaponBudget(character)
+            self.maxBonus = math.floor(math.sqrt(weaponBudget / self.__WEAPON_BONUS_FACTOR))
         else:
-            return 0
+            self.maxBonus = 0
 
-    def getMaxSurplus(self, character):
-        weaponBudget = character.getWeaponBudget() - self.WEAPON_MASTERWORK
-        weaponBonus = self.getMaxWeaponBonus(character)
-        return math.floor(weaponBudget - weaponBonus * weaponBonus * self.WEAPON_BONUS_FACTOR)
+    def _setMaxSurplus(self, character):
+        weaponBudget = self._getWeaponBudget(character)
+        self.maxSurplus = math.floor(weaponBudget - self.maxBonus * self.maxBonus * self.__WEAPON_BONUS_FACTOR)
 
-    def getOptimalBonus(self, character):
-        maxBonus = self.getMaxWeaponBonus(character)
-        maxSurplus = self.getMaxSurplus(character)
-        print("Waffenbonus:    +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(maxBonus, maxSurplus))
+    def _getWeaponBudget(self, character):
+        return character.getWeaponBudget() - self.__WEAPON_MASTERWORK
+
+    def printOptimalBonus(self):
+        print("Waffenbonus:    +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(self.maxBonus, self.maxSurplus))

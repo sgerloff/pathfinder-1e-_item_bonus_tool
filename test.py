@@ -8,7 +8,7 @@ from Classes.nonPlayerCharacter import NonPlayerCharacter
 
 from Classes.warriorNPC import WarriorNPC
 
-# wb = WeaponBonus()
+wb = WeaponBonus()
 pb = ProtectionBonuses()
 pb.armor = True
 pb.shield = True
@@ -20,9 +20,10 @@ pb.other = True
 #
 print("PC:")
 pc = PlayerCharacter(9)
-# wb.getOptimalBonus(pc)
-# print("")
-pb.setMaxBoni(pc)
+wb.setForCharacter(pc)
+wb.printOptimalBonus()
+print("")
+pb.setForCharacter(pc)
 pb.printOptimalBonusSet()
 print("")
 # ab.getOptimalBonusSet(pc)
