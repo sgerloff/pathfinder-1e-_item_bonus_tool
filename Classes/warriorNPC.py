@@ -4,48 +4,79 @@ from Classes.attributeBonuses import AttributeBonuses
 from Classes.protectionBonuses import ProtectionBonuses
 from Classes.weaponBonus import WeaponBonus
 
+
 class WarriorNPC(NonPlayerCharacter):
-    
-    type="melee"
-    race="humanoid"
-    
-    armorType="medium"
-    shieldType="heavy"
-    
+    type = "melee"
+    race = "humanoid"
+
+    armorType = "medium"
+    shieldType = "heavy"
+
     _attributeBonus = AttributeBonuses()
     _protectionBonus = ProtectionBonuses()
     _weaponBonus = WeaponBonus()
-    
+
     _baseStrength = {
         "melee": 13,
         "range": 11
     }
-    
+
     _baseDexterity = {
         "melee": 11,
         "range": 13
     }
-    
+
     _baseConstitution = {
         "melee": 12,
         "range": 12
     }
-    
+
     _baseIntelligence = {
         "melee": 9,
         "range": 10
     }
-    
+
     _baseWisdom = {
         "melee": 10,
         "range": 9
     }
-    
+
     _baseCharisma = {
         "melee": 8,
         "range": 8
     }
-    
+
+    def __init__(self):
+        self.type = "melee"
+        self.race = "humanoid"
+        self.armorType = "medium"
+        self.shieldType = "heavy"
+
+    def __init__(self, level, type, race, armorType, shieldType):
+        self.setLevel(level)
+        self.type = type
+        self.race = race
+        self.armorType = armorType
+        self.shieldType = shieldType
+        if self.shieldType != "":
+            self._protectionBonus.shield = True
+
+    def setLevel(self, level):
+        self.level = level
+        self._protectionBonus.armor = True
+        self._protectionBonus.natural = True
+        self._protectionBonus.deflection = True
+        self._protectionBonus.other = False
+        self._protectionBonus.save = True
+        self._protectionBonus.setMaxBoni(self)
+
+    def addFavoriteAttributeBonus(self):
+        bonus = math.floor(self.level / 4.)
+        bonus += self._attributeBonus.getMaxBonus(self)
+        if self.race == "humanoid":
+            bonus += 2
+        return bonus
+
     def getStrength(self):
         strength = self._baseStrength.get(self.type)
         if self.race == "gnome":
@@ -53,14 +84,11 @@ class WarriorNPC(NonPlayerCharacter):
         if self.race == "halfling":
             strength -= 2
         if self.type == "melee":
-            strength += math.floor(self.level/4.)
-            strength += self._attributeBonus.getMaxBonus(self)
-            if self.race == "humanoid":
-                strength += 2
+            strength += self.addFavoriteAttributeBonus()
         if self.heroic:
             strength += 2
         return strength
-        
+
     def getDexterity(self):
         dexterity = self._baseDexterity.get(self.type)
         if self.race == "elvish":
@@ -68,14 +96,11 @@ class WarriorNPC(NonPlayerCharacter):
         if self.race == "halfling":
             dexterity += 2
         if self.type == "range":
-            dexterity += math.floor(self.level/4.)
-            dexterity += self._attributeBonus.getMaxBonus(self)
-            if self.race == "humanoid":
-                dexterity += 2
+            dexterity += self.addFavoriteAttributeBonus()
         if self.heroic:
-            dexterity += 2  
+            dexterity += 2
         return dexterity
-        
+
     def getConstitution(self):
         constitution = self._baseConstitution.get(self.type)
         if self.heroic:
@@ -87,7 +112,7 @@ class WarriorNPC(NonPlayerCharacter):
         if self.race == "gnome":
             constitution += 2
         return constitution
-        
+
     def getIntelligence(self):
         intelligence = self._baseIntelligence.get(self.type)
         if self.race == "elvish":
@@ -100,7 +125,7 @@ class WarriorNPC(NonPlayerCharacter):
             if self.type == "range":
                 intelligence += 2
         return intelligence
-    
+
     def getWisdom(self):
         wisdom = self._baseWisdom.get(self.type)
         if self.race == "dwarf":
@@ -111,7 +136,7 @@ class WarriorNPC(NonPlayerCharacter):
             if self.type == "range":
                 wisdom += 1
         return wisdom
-        
+
     def getCharisma(self):
         charisma = self._baseCharisma.get(self.type)
         if self.race == "dwarf":
@@ -121,45 +146,39 @@ class WarriorNPC(NonPlayerCharacter):
         if self.heroic:
             charisma += 0
         return charisma
-    
+
     def getWillSave(self):
-        return math.floor(self.level/3.) + self.getAttributeBonus(self.getWisdom()) + self.getResistanceBonus()
-    
+        return math.floor(self.level / 3.) + self.getAttributeBonus(self.getWisdom()) + self._protectionBonus.saveBonus
+
     def getReflexSave(self):
-        return math.floor(self.level/3.) + self.getAttributeBonus(self.getDexterity) + self.getResistanceBonus()
-        
+        return math.floor(self.level / 3.) + self.getAttributeBonus(self.getDexterity) + self._protectionBonus.saveBonus
+
     def getFortitudeSave(self):
-        return math.floor(self.level/2)+2 + self.getAttributeBonus(self.getConstitution()) + self.getResistanceBonus()
-   
-    def getResistanceBonus(self):
-        self._protectionBonus.save = True
-        return self._protectionBonus.getResistanceBonus(self)
-        
+        return math.floor(self.level / 2) + 2 + self.getAttributeBonus(
+            self.getConstitution()) + self._protectionBonus.saveBonus
+
     def getBaseAttackBonus(self):
         return self.level
-        
+
     def getMeleeAttackBonus(self):
         return self.getAttributeBonus(self.getStrength()) + self._weaponBonus.getMaxWeaponBonus(self)
-        
+
     def getRangeAttackBonus(self):
         return self.getAttributeBonus(self.getDexterity()) + self._weaponBonus.getMaxWeaponBonus(self)
-        
+
     def getArmorClass(self):
         self._protectionBonus.deflection = True
         self._protectionBonus.natural = True
-        
+
         armorClass = 10
-        
+
         if self.armorType == "medium":
             armorClass += 5
         if self.shieldType == "heavy":
             armorClass += +2
             self._protectionBonus.shield = True
-        optimalBonus = self._protectionBonus.getOptimalBonusSet(self)
-        armorClass += optimalBonus.get("total")
-        
+        armorClass += self._protectionBonus.maxArmorBonus
+
         armorClass += self.getAttributeBonus(self.getDexterity())
-        
+
         return armorClass
-    
-        

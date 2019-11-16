@@ -3,20 +3,62 @@ from Classes.playerCharacter import PlayerCharacter
 
 
 class ProtectionBonuses:
-    ARMOR_MASTERWORK = 150
-    ARMOR_BONUS_FACTOR = 1000
-    SHIELD_BONUS_FACTOR = 1000
-    NATURAL_ARMOR_BONUS_FACTOR = 2000
-    DEFLECTION_BONUS_FACTOR = 2000
-    LUCK_BONUS_FACTOR = 2500
-    SAVE_RESISTANCE_BONUS_FACTOR = 1000
+    __ARMOR_MASTERWORK = 150
+    __ARMOR_BONUS_FACTOR = 1000
+    __SHIELD_BONUS_FACTOR = 1000
+    __NATURAL_ARMOR_BONUS_FACTOR = 2000
+    __DEFLECTION_BONUS_FACTOR = 2000
+    __LUCK_BONUS_FACTOR = 2500
+    __SAVE_RESISTANCE_BONUS_FACTOR = 1000
 
     armor = True
-    natural = False
-    deflection = False
-    shield = False
+    natural = True
+    deflection = True
+    shield = True
     other = False
-    save = False
+    save = True
+
+    saveBonus = 0
+    maxBonus = 0
+    maxSurplus = 0
+    maxArmorBonus = 0
+    maxShieldBonus = 0
+    maxNaturalBonus = 0
+    maxDeflectionBonus = 0
+    maxOtherBonus = 0
+
+    def __init__(self):
+        self.__reset__()
+
+    def __reset__(self):
+        self.saveBonus = 0
+        self.maxBonus = 0
+        self.maxSurplus = 0
+        self.maxArmorBonus = 0
+        self.maxShieldBonus = 0
+        self.maxNaturalBonus = 0
+        self.maxDeflectionBonus = 0
+        self.maxOtherBonus = 0
+
+    def setMaxBoni(self, character):
+        self.__reset__()
+        self._setResistanceBonus(character)
+        protectionBudget = character.getProtectionBudget() - self.getPrice(self.saveBonus,
+                                                                           self.__SAVE_RESISTANCE_BONUS_FACTOR)
+        threshold = 6
+        self._setMaxBonus(protectionBudget, threshold)
+        self._setMaxSurplus(protectionBudget, threshold)
+        self._setOptimalBonusSet(protectionBudget, threshold)
+
+    def _setResistanceBonus(self, character):
+        if self.save:
+            self.saveBonus = math.floor(math.sqrt(character.level))
+            saveCost = self.getPrice(self.saveBonus, self.__SAVE_RESISTANCE_BONUS_FACTOR)
+            maxCost = character.getSaveBudget()
+            if saveCost > maxCost:
+                self.saveBonus = math.floor(math.sqrt(maxCost / self.__SAVE_RESISTANCE_BONUS_FACTOR))
+        else:
+            self.saveBonus = 0
 
     def getPrice(self, bonus, factor):
         return bonus * bonus * factor
@@ -24,8 +66,8 @@ class ProtectionBonuses:
     def getBonusTreshold(self, character):
         return math.floor(math.sqrt(character.level))
 
-    def getMaxBonus(self, protectionBudget, threshold):
-        maxBonus = 0
+    def _setMaxBonus(self, protectionBudget, threshold):
+        self.maxBonus = 0
         for armorBonus in range(0, threshold, 1):
             for naturalArmorBonus in range(0, threshold, 1):
                 for deflectionBonus in range(0, threshold, 1):
@@ -35,33 +77,32 @@ class ProtectionBonuses:
                                                      otherBonus) < protectionBudget:
                                 totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus,
                                                                 shieldBonus, otherBonus)
-                                if totalBonus > maxBonus:
-                                    maxBonus = totalBonus
-        return maxBonus
+                                if totalBonus > self.maxBonus:
+                                    self.maxBonus = totalBonus
 
     def getCostOfBonuses(self, armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus, otherBonus):
-        if self.armor == True:
-            armorBonusPrice = self.getPrice(armorBonus, self.ARMOR_BONUS_FACTOR) + self.ARMOR_MASTERWORK
+        if self.armor:
+            armorBonusPrice = self.getPrice(armorBonus, self.__ARMOR_BONUS_FACTOR) + self.__ARMOR_MASTERWORK
         else:
             armorBonusPrice = 0
 
-        if self.natural == True:
-            naturalArmorBonusPrice = self.getPrice(naturalArmorBonus, self.NATURAL_ARMOR_BONUS_FACTOR)
+        if self.natural:
+            naturalArmorBonusPrice = self.getPrice(naturalArmorBonus, self.__NATURAL_ARMOR_BONUS_FACTOR)
         else:
             naturalArmorBonusPrice = 0
 
-        if self.deflection == True:
-            deflectionBonusPrice = self.getPrice(deflectionBonus, self.DEFLECTION_BONUS_FACTOR)
+        if self.deflection:
+            deflectionBonusPrice = self.getPrice(deflectionBonus, self.__DEFLECTION_BONUS_FACTOR)
         else:
             deflectionBonusPrice = 0
 
-        if self.shield == True:
-            shieldBonusPrice = self.getPrice(shieldBonus, self.SHIELD_BONUS_FACTOR) + self.ARMOR_MASTERWORK
+        if self.shield:
+            shieldBonusPrice = self.getPrice(shieldBonus, self.__SHIELD_BONUS_FACTOR) + self.__ARMOR_MASTERWORK
         else:
             shieldBonusPrice = 0
 
-        if self.other == True:
-            otherBonusPrice = self.getPrice(otherBonus, self.LUCK_BONUS_FACTOR)
+        if self.other:
+            otherBonusPrice = self.getPrice(otherBonus, self.__LUCK_BONUS_FACTOR)
         else:
             otherBonusPrice = 0
 
@@ -81,9 +122,8 @@ class ProtectionBonuses:
 
         return armorBonus + naturalArmorBonus + deflectionBonus + shieldBonus + otherBonus
 
-    def getMaxSurplus(self, protectionBudget, threshold):
-        maxSurplus = -1
-        maxBonus = self.getMaxBonus(protectionBudget, threshold)
+    def _setMaxSurplus(self, protectionBudget, threshold):
+        self.maxSurplus = 0
         for armorBonus in range(0, threshold, 1):
             for naturalArmorBonus in range(0, threshold, 1):
                 for deflectionBonus in range(0, threshold, 1):
@@ -91,39 +131,16 @@ class ProtectionBonuses:
                         for otherBonus in range(0, threshold, 1):
                             totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus,
                                                             otherBonus)
-                            if totalBonus == maxBonus:
+                            if totalBonus == self.maxBonus:
                                 surplus = protectionBudget - self.getCostOfBonuses(armorBonus,
                                                                                    naturalArmorBonus,
                                                                                    deflectionBonus,
                                                                                    shieldBonus,
                                                                                    otherBonus)
-                                if surplus > maxSurplus:
-                                    maxSurplus = surplus
-        return maxSurplus
+                                if surplus > self.maxSurplus:
+                                    self.maxSurplus = surplus
 
-    def getResistanceBonus(self, character):
-        if self.save == True:
-            saveBonus = math.floor(math.sqrt(character.level))
-            saveCost = self.getPrice(saveBonus, self.SAVE_RESISTANCE_BONUS_FACTOR)
-            maxCost = character.getSaveBudget()
-            if saveCost > maxCost:
-                saveBonus = math.floor(math.sqrt(maxCost / self.SAVE_RESISTANCE_BONUS_FACTOR))
-        else:
-            saveBonus = 0
-        return saveBonus
-
-    def getOptimalBonusSet(self, character):
-        saveResistanceBonus = self.getResistanceBonus(character)
-        protectionBudget = character.getProtectionBudget() - self.getPrice(saveResistanceBonus,
-                                                                           self.SAVE_RESISTANCE_BONUS_FACTOR)
-        threshold = 6
-        maxBonus = self.getMaxBonus(protectionBudget, threshold)
-        maxSurplus = self.getMaxSurplus(protectionBudget, threshold)
-        maxArmorBonus = 0
-        maxNaturalArmorBonus = 0
-        maxDeflectionBonus = 0
-        maxShieldBonus = 0
-        maxOtherBonus = 0
+    def _setOptimalBonusSet(self, protectionBudget, threshold):
         for armorBonus in range(0, threshold, 1):
             for naturalArmorBonus in range(0, threshold, 1):
                 for deflectionBonus in range(0, threshold, 1):
@@ -131,36 +148,29 @@ class ProtectionBonuses:
                         for otherBonus in range(0, threshold, 1):
                             totalBonus = self.getTotalBonus(armorBonus, naturalArmorBonus, deflectionBonus, shieldBonus,
                                                             otherBonus)
-                            if totalBonus == maxBonus:
+                            if totalBonus == self.maxBonus:
                                 surplus = protectionBudget - self.getCostOfBonuses(armorBonus,
                                                                                    naturalArmorBonus,
                                                                                    deflectionBonus,
                                                                                    shieldBonus,
                                                                                    otherBonus)
-                                if surplus == maxSurplus:
-                                    if self.armor == True:
-                                        maxArmorBonus = armorBonus
-                                    if self.natural == True:
-                                        maxNaturalArmorBonus = naturalArmorBonus
-                                    if self.deflection == True:
-                                        maxDeflectionBonus = deflectionBonus
-                                    if self.shield == True:
-                                        maxShieldBonus = shieldBonus
-                                    if self.other == True:
-                                        maxOtherBonus = otherBonus
-        print("Bonus auf RK:   +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(maxBonus, math.floor(maxSurplus)))
-        print("Resistenzbonus: +{0:<2d}".format(saveResistanceBonus))
-        print("Rüstungsbonus:  +{0:<2d}    Schildbonus: +{1:<2d}".format(maxArmorBonus, maxShieldBonus))
-        print("Natürlicher RB: +{0:<2d}    Ablenkbonus: +{1:<2d}".format(maxNaturalArmorBonus, maxDeflectionBonus))
-        print("Anderer Bonus:  +{0:<2d}".format(maxOtherBonus))
+                                if surplus == self.maxSurplus:
+                                    if self.armor:
+                                        self.maxArmorBonus = armorBonus
+                                    if self.natural:
+                                        self.maxNaturalArmorBonus = naturalArmorBonus
+                                    if self.deflection:
+                                        self.maxDeflectionBonus = deflectionBonus
+                                    if self.shield:
+                                        self.maxShieldBonus = shieldBonus
+                                    if self.other:
+                                        self.maxOtherBonus = otherBonus
 
-        optimalBonus = {
-            "total": maxBonus,
-            "armor": maxArmorBonus,
-            "shield": maxShieldBonus,
-            "natural": maxNaturalArmorBonus,
-            "deflection": maxDeflectionBonus,
-            "other": maxOtherBonus,
-            "surplus": maxSurplus
-        }
-        return optimalBonus
+    def printOptimalBonusSet(self):
+        print("Bonus auf RK:   +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(self.maxBonus,
+                                                                                 math.floor(self.maxSurplus)))
+        print("Resistenzbonus: +{0:<2d}".format(self.saveBonus))
+        print("Rüstungsbonus:  +{0:<2d}    Schildbonus: +{1:<2d}".format(self.maxArmorBonus, self.maxShieldBonus))
+        print("Natürlicher RB: +{0:<2d}    Ablenkbonus: +{1:<2d}".format(self.maxNaturalArmorBonus,
+                                                                         self.maxDeflectionBonus))
+        print("Anderer Bonus:  +{0:<2d}".format(self.maxOtherBonus))
