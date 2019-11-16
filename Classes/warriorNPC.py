@@ -70,10 +70,11 @@ class WarriorNPC(NonPlayerCharacter):
         self._protectionBonus.save = True
         self._protectionBonus.setForCharacter(self)
         self._weaponBonus.setForCharacter(self)
+        self._attributeBonus.setForCharacter(self)
 
     def addFavoriteAttributeBonus(self):
         bonus = math.floor(self.level / 4.)
-        bonus += self._attributeBonus.getMaxBonus(self)
+        bonus += self._attributeBonus.maxBonus
         if self.race == "humanoid":
             bonus += 2
         return bonus

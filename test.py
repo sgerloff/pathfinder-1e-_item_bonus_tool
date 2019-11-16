@@ -16,7 +16,7 @@ pb.save = True
 pb.natural = True
 pb.deflection = True
 pb.other = True
-# ab = AttributeBonuses()
+ab = AttributeBonuses()
 #
 print("PC:")
 pc = PlayerCharacter(9)
@@ -26,7 +26,8 @@ print("")
 pb.setForCharacter(pc)
 pb.printOptimalBonusSet()
 print("")
-# ab.getOptimalBonusSet(pc)
+ab.setForCharacter(pc)
+ab.printOptimalBonus(pc)
 #
 # print("\n\nNPC:")
 # npc = NonPlayerCharacter(13)
