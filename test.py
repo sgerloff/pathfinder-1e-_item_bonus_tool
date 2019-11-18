@@ -39,10 +39,7 @@ ab.printOptimalBonus(pc)
 # ab.getOptimalBonusSet(npc)
 
 # NPC Classes
-warrior = WarriorNPC(1, "melee", "dwarf", "medium", "heavy")
+warrior = WarriorNPC(13, "melee", "dwarf", "heavy", "tower")
 # pb.getOptimalBonusSet(warrior)
 warrior.heroic = True
-print(warrior.getFortitudeSave())
-print(warrior.getStrength())
-print(warrior.getMeleeAttackBonus())
-print(warrior.getArmorClass())
+warrior.printSummary()

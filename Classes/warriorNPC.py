@@ -1,4 +1,5 @@
 import math
+import random
 from Classes.nonPlayerCharacter import NonPlayerCharacter
 from Classes.attributeBonuses import AttributeBonuses
 from Classes.protectionBonuses import ProtectionBonuses
@@ -6,6 +7,8 @@ from Classes.weaponBonus import WeaponBonus
 
 
 class WarriorNPC(NonPlayerCharacter):
+    __hitDice = 10
+    
     type = "melee"
     race = "humanoid"
 
@@ -184,3 +187,24 @@ class WarriorNPC(NonPlayerCharacter):
         armorClass += self.getAttributeBonus(self.getDexterity())
 
         return armorClass
+        
+    def getInitiativeBonus(self):
+        return self.getAttributeBonus(self.getDexterity())
+    
+    def getRandomHitPoints(self):
+        hitPoints=0
+        for i in range(0,self.level,1):
+            hitPoints += random.randrange(1,self.__hitDice,1)
+        return hitPoints + self.getAttributeBonus(self.getConstitution())
+        
+    def getMeanHitPoints(self):
+        return round((0.5*(self.__hitDice+1) + self.getAttributeBonus(self.getConstitution()) )*self.level)
+    
+    def getStandardDeviationHitPoints(self):
+        return math.floor(math.sqrt(1.5*self.getMeanHitPoints()))
+                
+    def printSummary(self):
+        print( "Warrior: {0:<15s}, Armor: {1:<10s}, Shield: {2:<10s}".format(self.type+" "+self.race, self.armorType, self.shieldType) )
+        print( "HP: {0:>4d}±{1:<3d}, Initiative: {2:<2d}".format(self.getMeanHitPoints(),self.getStandardDeviationHitPoints() , self.getInitiativeBonus()) )
+        print("AC: {0:<2d}".format(self.getArmorClass()))
+        
