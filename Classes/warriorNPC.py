@@ -5,10 +5,16 @@ from Classes.attributeBonuses import AttributeBonuses
 from Classes.protectionBonuses import ProtectionBonuses
 from Classes.weaponBonus import WeaponBonus
 
+import math
+from Classes.nonPlayerCharacter import NonPlayerCharacter
+from Classes.attributeBonuses import AttributeBonuses
+from Classes.protectionBonuses import ProtectionBonuses
+from Classes.weaponBonus import WeaponBonus
+
 
 class WarriorNPC(NonPlayerCharacter):
     __hitDice = 10
-    
+
     type = "melee"
     race = "humanoid"
 
@@ -66,11 +72,13 @@ class WarriorNPC(NonPlayerCharacter):
 
     def setLevel(self, level):
         self.level = level
+
         self._protectionBonus.armor = True
         self._protectionBonus.natural = True
         self._protectionBonus.deflection = True
         self._protectionBonus.other = False
         self._protectionBonus.save = True
+
         self._protectionBonus.setForCharacter(self)
         self._weaponBonus.setForCharacter(self)
         self._attributeBonus.setForCharacter(self)
@@ -172,39 +180,48 @@ class WarriorNPC(NonPlayerCharacter):
         return self.getAttributeBonus(self.getDexterity()) + self._weaponBonus.maxBonus
 
     def getArmorClass(self):
-        self._protectionBonus.deflection = True
-        self._protectionBonus.natural = True
 
         armorClass = 10
 
+        if self.armorType == "light":
+            armorClass += 2
         if self.armorType == "medium":
             armorClass += 5
+        if self.armorType == "heavy":
+            armorClass += 7
+
+        if self.shieldType == "light":
+            armorClass += 1
         if self.shieldType == "heavy":
-            armorClass += +2
-            self._protectionBonus.shield = True
+            armorClass += 2
+        if self.shieldType == "tower":
+            armorClass += 4
+
         armorClass += self._protectionBonus.maxArmorBonus
 
         armorClass += self.getAttributeBonus(self.getDexterity())
 
         return armorClass
-        
+
     def getInitiativeBonus(self):
         return self.getAttributeBonus(self.getDexterity())
-    
+
     def getRandomHitPoints(self):
-        hitPoints=0
-        for i in range(0,self.level,1):
-            hitPoints += random.randrange(1,self.__hitDice,1)
+        hitPoints = 0
+        for i in range(0, self.level, 1):
+            hitPoints += random.randrange(1, self.__hitDice, 1)
         return hitPoints + self.getAttributeBonus(self.getConstitution())
-        
+
     def getMeanHitPoints(self):
-        return round((0.5*(self.__hitDice+1) + self.getAttributeBonus(self.getConstitution()) )*self.level)
-    
+        return round((0.5 * (self.__hitDice + 1) + self.getAttributeBonus(self.getConstitution())) * self.level)
+
     def getStandardDeviationHitPoints(self):
-        return math.floor(math.sqrt(1.5*self.getMeanHitPoints()))
-                
+        return math.floor(math.sqrt(1.5 * self.getMeanHitPoints()))
+
     def printSummary(self):
-        print( "Warrior: {0:<15s}, Armor: {1:<10s}, Shield: {2:<10s}".format(self.type+" "+self.race, self.armorType, self.shieldType) )
-        print( "HP: {0:>4d}±{1:<3d}, Initiative: {2:<2d}".format(self.getMeanHitPoints(),self.getStandardDeviationHitPoints() , self.getInitiativeBonus()) )
+        print("Warrior: {0:<15s}, Armor: {1:<10s}, Shield: {2:<10s}".format(self.type + " " + self.race, self.armorType,
+                                                                            self.shieldType))
+        print("HP: {0:>4d}±{1:<3d}, Initiative: {2:<2d}".format(self.getMeanHitPoints(),
+                                                                self.getStandardDeviationHitPoints(),
+                                                                self.getInitiativeBonus()))
         print("AC: {0:<2d}".format(self.getArmorClass()))
-        
