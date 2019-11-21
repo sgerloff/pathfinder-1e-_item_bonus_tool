@@ -22,6 +22,7 @@ class WarriorNPC(NonPlayerCharacter):
 
     armorType = "medium"
     shieldType = "heavy"
+    weaponType = "sword"
 
     _attributeBonus = AttributeBonuses()
     _protectionBonus = ProtectionBonuses()
@@ -57,8 +58,27 @@ class WarriorNPC(NonPlayerCharacter):
         "range": 8
     }
 
+    _damageDice = {
+        "sword": "1D6 19-20/×2",
+        "longsword": "1D8 19-20/×2",
+        "axe": "1D8 ×3",
+        "hammer": "1D8 ×3",
+        "curved": "1D6 18-20/×2",
+        "mace": "1D8 ×2",
+        "halberd2H": "1D10 ×3",
+        "curved2H": "2D4 18-20/×2",
+        "mace2H": "1D10 19-20/×2",
+        "sword2H": "2D6 19-20/×2",
+        "axe2H": "1D12 ×3",
+        "club2H": "1D10 ×2",
+        "bow": "1W6 ×3",
+        "longbow": "1W8 ×3",
+        "crossbow": "1W8 19-20/×2",
+        "heavycrossbow": "1W10 19-20/×2"
+    }
 
-    def __init__(self, level, type, race, armorType, shieldType):
+
+    def __init__(self, level, type, race, armorType, shieldType, weaponType):
         self.setLevel(level)
         self.type = type
         self.race = race
@@ -67,6 +87,7 @@ class WarriorNPC(NonPlayerCharacter):
         self.shieldType = shieldType
         if self.shieldType != "":
             self._protectionBonus.shield = True
+        self.weaponType = weaponType
             
     def _setSize(self):
         if self.race == "gnome":
@@ -305,5 +326,13 @@ class WarriorNPC(NonPlayerCharacter):
         if self.getBaseAttackBonus() > 15:
             fourthAttack = firstAttack - 15
         
+        damageBonus = self._weaponBonus.maxBonus
+        if self.type == "melee":
+            damageBonus += self.getAttributeBonus(self.getStrength())
+            if self.weaponType.endswith("2H"):
+                damageBonus += math.floor(0.5*self.getAttributeBonus(self.getStrength()))
+        if self.type == "range":
+            damageBonus += self.getAttributeBonus(self.getDexterity())
         
-        print("AB: +{0:<2d}/ +{1:<2d}/ +{2:<2d}/ +{3:<2d}".format(firstAttack, secondAttack, thirdAttack,fourthAttack))
+        
+        print("AB: +{0:<2d}/ +{1:<2d}/ +{2:<2d}/ +{3:<2d}, {4:s}: {5:d}+{6:s}".format(firstAttack, secondAttack, thirdAttack,fourthAttack, self.weaponType, damageBonus, self._damageDice.get(self.weaponType)))
