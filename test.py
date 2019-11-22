@@ -8,26 +8,26 @@ from Classes.nonPlayerCharacter import NonPlayerCharacter
 
 from Classes.warriorNPC import WarriorNPC
 
-#wb = WeaponBonus()
-#pb = ProtectionBonuses()
-#pb.armor = True
-#pb.shield = True
-#pb.save = True
-##pb.natural = True
-#pb.deflection = True
-##pb.other = True
-#ab = AttributeBonuses()
+wb = WeaponBonus()
+pb = ProtectionBonuses()
+pb.armor = True
+pb.shield = True
+pb.save = True
+pb.natural = True
+pb.deflection = True
+pb.other = True
+ab = AttributeBonuses()
 #
-#print("PC:")
-#pc = PlayerCharacter(9)
-##wb.setForCharacter(pc)
-#wb.printOptimalBonus()
-#print("")
-#pb.setForCharacter(pc)
-#pb.printOptimalBonusSet()
-#print("")
-#ab.setForCharacter(pc)
-#ab.printOptimalBonus(pc)
+print("PC:")
+pc = PlayerCharacter(9)
+wb.setForCharacter(pc)
+wb.printOptimalBonus()
+print("")
+pb.setForCharacter(pc)
+pb.printOptimalBonusSet()
+print("")
+ab.setForCharacter(pc)
+ab.printOptimalBonus(pc)
 #
 # print("\n\nNPC:")
 # npc = NonPlayerCharacter(13)
@@ -39,7 +39,7 @@ from Classes.warriorNPC import WarriorNPC
 # ab.getOptimalBonusSet(npc)
 
 # NPC Classes
-warrior = WarriorNPC(9, "range", "elvish", "light", "")
+# warrior = WarriorNPC(9, "range", "elvish", "light", "")
 # pb.getOptimalBonusSet(warrior)
-warrior.heroic = True
-warrior.printSummary()
+# warrior.heroic = True
+# warrior.printSummary()

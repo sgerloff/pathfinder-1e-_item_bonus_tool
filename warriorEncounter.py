@@ -23,12 +23,33 @@ def randomRangedWarrior(level):
     races = ["human", "halfelf", "halfling", "elvish"]
     weapons = ["bow", "longbow", "crossbow", "heavycrossbow"]
     return WarriorNPC(level, "range", random.choice(races), "light", "", random.choice(weapons))
-    
-        
-                
-warriorR = randomMeleeWarrior(9)
+
+print("")
+print("Melee 1")
+warriorR = randomMeleeWarrior(7)
+warriorR.heroic = True
+warriorR.printSummary()
+
+print("")
+print("Melee 2")
+warriorR = randomMeleeWarrior(7)
+warriorR.printSummary()
+
+print("")
+print("Melee 3")
+warriorR = randomMeleeWarrior(7)
+warriorR.printSummary()
+
+print("")
+print("Melee 4")
+warriorR = randomMeleeWarrior(7)
 warriorR.printSummary()
 print("")
-warriorR = randomRangedWarrior(9)
+print("Ranged 5")
+warriorR = randomRangedWarrior(7)
+warriorR.printSummary()
+print("")
+print("Ranged 6")
+warriorR = randomRangedWarrior(7)
 warriorR.printSummary()
     
