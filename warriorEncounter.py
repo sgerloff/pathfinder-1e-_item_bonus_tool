@@ -1,53 +1,34 @@
 import random
 from Classes.warriorNPC import WarriorNPC
 
-# NPC Classes
-warrior = WarriorNPC(9, "melee", "humanoid", "medium", "", "sword")
-# pb.getOptimalBonusSet(warrior)
-warrior.heroic = True
-warrior.printSummary()
-
 def randomMeleeWarrior( level):
-    races = {
-        1: "humanoid",
-        2: "dwarf",
-        3: "gnome"
-    }
-    race = races.get(random.randrange(1,4,1))
-    armors = {
-        1: "medium",
-        2: "heavy"
-    }
-    armor = armors.get(random.randrange(1,3,1))
-    shields = {
-        1: "light",
-        2: "heavy",
-        3: "tower"
-    }
-    weapons = {
-        1: "halberd2H",
-        2: "curved2H",
-        3: "mace2H",
-        4: "sword2H",
-        5: "axe2H",
-        6: "club2H",
-        7: "sword",
-        8: "longsword",
-        9: "axe",
-        10: "hammer",
-        11: "curved",
-        12: "mace"
-    }
+    races = ["human", "halforc", "halfelf", "dwarf", "gnome"]
+    race = random.choice(races)
+    armors = ["medium", "heavy"]
+    armor = random.choice(armors)
+    shields = ["light", "heavy", "tower"]
+    weapons2H = ["halberd2H", "curved2H", "mace2H", "sword2H", "axe2H", "club2H", "sword", "longsword", "axe", "hammer", "curved", "mace"]
+    weapons1H = ["sword", "longsword", "axe", "hammer", "curved", "mace"]
     
     shieldBool = random.randrange(0,2,1)
     if shieldBool == 0:
-        weapon = weapons.get(random.randrange(1,13,1))
+        weapon = random.choice(weapons2H)
         shield = ""
     if shieldBool == 1:
-        weapon = weapons.get(random.randrange(7,13,1))
-        shield = shields.get(random.randrange(1,4,1))
+        weapon = random.choice(weapons1H)
+        shield = random.choice(shields)
     return WarriorNPC(level, "melee", race, armor, shield, weapon)
+
+def randomRangedWarrior(level):
+    races = ["human", "halfelf", "halfling", "elvish"]
+    weapons = ["bow", "longbow", "crossbow", "heavycrossbow"]
+    return WarriorNPC(level, "range", random.choice(races), "light", "", random.choice(weapons))
     
+        
+                
 warriorR = randomMeleeWarrior(9)
+warriorR.printSummary()
+print("")
+warriorR = randomRangedWarrior(9)
 warriorR.printSummary()
     

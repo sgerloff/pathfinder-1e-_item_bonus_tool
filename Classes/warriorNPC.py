@@ -16,7 +16,7 @@ class WarriorNPC(NonPlayerCharacter):
     __hitDice = 10
 
     type = "melee"
-    race = "humanoid"
+    race = "human"
 
     size = "normal"
 
@@ -111,7 +111,7 @@ class WarriorNPC(NonPlayerCharacter):
     def addFavoriteAttributeBonus(self):
         bonus = math.floor(self.level / 4.)
         bonus += self._attributeBonus.maxBonus
-        if self.race == "humanoid":
+        if self.race == "human" or self.race == "halforc" or self.race == "halfelf":
             bonus += 2
         return bonus
 
