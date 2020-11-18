@@ -107,13 +107,16 @@ class NonPlayerCharacter(PlayerCharacter):
         return effectiveLevel
 
     def getProtectionBudget(self):
-        return self._protectionBudgetPerLevel.get(self.level)
+        return self._protectionBudgetPerLevel.get(self.getEffectiveLevel())
 
     def getSaveBudget(self):
-        return math.floor(self._protectionBudgetPerLevel.get(self.level) / 3.)
+        return math.floor(self._protectionBudgetPerLevel.get(self.getEffectiveLevel()) / 3.)
 
     def getWeaponBudget(self):
-        return self._weaponBudgetPerLevel.get(self.level)
+        return self._weaponBudgetPerLevel.get(self.getEffectiveLevel())
 
     def getMagicBudget(self):
-        return self._magicBudgetPerLevel.get(self.level)
+        return self._magicBudgetPerLevel.get(self.getEffectiveLevel())
+
+    def getNetworth(self):
+        return self._networthPerLevel.get(self.getEffectiveLevel())

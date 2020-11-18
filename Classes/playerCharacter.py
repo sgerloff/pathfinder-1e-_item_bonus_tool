@@ -55,3 +55,6 @@ class PlayerCharacter:
 
     def getMagicBudget(self):
         return self.MAGIC_RATIO * self.networth
+
+    def getNetworth(self):
+        return self.networth

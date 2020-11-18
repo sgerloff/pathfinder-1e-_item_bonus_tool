@@ -1,10 +1,10 @@
-import math
 import tkinter as tk
 from Classes.protectionBonuses import ProtectionBonuses
 from Classes.weaponBonus import WeaponBonus
 from Classes.attributeBonuses import AttributeBonuses
 
 from Classes.playerCharacter import PlayerCharacter
+from Classes.nonPlayerCharacter import NonPlayerCharacter
 
 class App(tk.Frame):
     def __init__(self, master):
@@ -18,6 +18,9 @@ class App(tk.Frame):
 
         self.characterLevel = tk.IntVar(self)
         self.characterLevel.set(1)
+
+        self.characterType = tk.StringVar(self)
+        self.characterType.set("pc")
 
         self.armorBonus = tk.BooleanVar(self)
         self.shieldBonus = tk.BooleanVar(self)
@@ -47,6 +50,12 @@ class App(tk.Frame):
         opt = tk.OptionMenu(self, self.characterLevel, *character_levels_list, command=self.updateSummary)
         opt.config(width=1)
         opt.grid(row=0, column=1, sticky="w")
+
+        character_type_list = ["pc", "npc", "heroic npc"]
+
+        opt2 = tk.OptionMenu(self, self.characterType, *character_type_list, command=self.updateSummary)
+        opt2.config(width=10)
+        opt2.grid(row=0, column=2, sticky="w")
 
     def setArmorCheckboxes(self):
         protection_bonus_label = tk.Label(self, text="Armor Options:")
@@ -86,12 +95,20 @@ class App(tk.Frame):
         self.updateSummary("")
 
     def updateSummary(self, event):
-        pc = PlayerCharacter(self.characterLevel.get())
-        self.wb.setForCharacter(pc)
-        self.pb.setForCharacter(pc)
-        self.ab.setForCharacter(pc)
+        character = PlayerCharacter(1)
+        if self.characterType.get() == "pc":
+            character = PlayerCharacter(self.characterLevel.get())
+        elif self.characterType.get() == "npc":
+            character = NonPlayerCharacter(self.characterLevel.get())
+            character.heroic = False
+        elif self.characterType.get() == "heroic npc":
+            character = NonPlayerCharacter(self.characterLevel.get())
+            character.heroic = True
+        self.wb.setForCharacter(character)
+        self.pb.setForCharacter(character)
+        self.ab.setForCharacter(character)
 
-        total = "The expected networth is {}gp. Suggested magic items: \n\n".format(pc.networth)
+        total = "The expected networth is {}gp. Suggested magic items: \n\n".format(character.getNetworth())
         if self.wb.maxBonus > 0:
             total += "Magic weapon +{:<2d}".format(self.wb.maxBonus)
         else:
