@@ -11,6 +11,7 @@ class PlayerCharacter:
     MAGIC_RATIO = 0.15
 
     _networthPerLevel = {
+        1: 0,
         2: 1000,
         3: 3000,
         4: 6000,
@@ -49,6 +50,7 @@ class PlayerCharacter:
         return self.SAVE_RATIO * self.networth
 
     def getWeaponBudget(self):
+
         return self.WEAPON_RATIO * self.networth
 
     def getMagicBudget(self):

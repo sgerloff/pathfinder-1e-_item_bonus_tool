@@ -1,4 +1,3 @@
-import math
 from Classes.protectionBonuses import ProtectionBonuses
 from Classes.weaponBonus import WeaponBonus
 from Classes.attributeBonuses import AttributeBonuses
@@ -28,18 +27,20 @@ pb.printOptimalBonusSet()
 print("")
 ab.setForCharacter(pc)
 ab.printOptimalBonus(pc)
-#
-# print("\n\nNPC:")
-# npc = NonPlayerCharacter(13)
-# npc.heroic = True
-# wb.getOptimalBonus(npc)
-# print("")
-# pb.getOptimalBonusSet(npc)
-# print("")
-# ab.getOptimalBonusSet(npc)
 
-# NPC Classes
-# warrior = WarriorNPC(9, "range", "elvish", "light", "")
-# pb.getOptimalBonusSet(warrior)
+print("\n\nNPC:")
+npc = NonPlayerCharacter(13)
+npc.heroic = True
+wb.setForCharacter(npc)
+wb.printOptimalBonus()
+print("")
+pb.setForCharacter(npc)
+pb.printOptimalBonusSet()
+print("")
+ab.setForCharacter(npc)
+ab.printOptimalBonus(npc)
+
+# # NPC Classes
+# warrior = WarriorNPC(9, "range", "elvish", "light", "", "mace")
 # warrior.heroic = True
 # warrior.printSummary()

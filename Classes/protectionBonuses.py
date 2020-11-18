@@ -11,19 +11,19 @@ class ProtectionBonuses:
     __LUCK_BONUS_FACTOR = 2500
     __SAVE_RESISTANCE_BONUS_FACTOR = 1000
 
-    armor = True
-    natural = True
-    deflection = True
-    shield = True
+    armor = False
+    natural = False
+    deflection = False
+    shield = False
     other = False
-    save = True
+    save = False
 
     saveBonus = 0
     maxBonus = 0
     maxSurplus = 0
     maxArmorBonus = 0
     maxShieldBonus = 0
-    maxNaturalBonus = 0
+    maxNaturalArmorBonus = 0
     maxDeflectionBonus = 0
     maxOtherBonus = 0
 
@@ -36,7 +36,7 @@ class ProtectionBonuses:
         self.maxSurplus = 0
         self.maxArmorBonus = 0
         self.maxShieldBonus = 0
-        self.maxNaturalBonus = 0
+        self.maxNaturalArmorBonus = 0
         self.maxDeflectionBonus = 0
         self.maxOtherBonus = 0
 
@@ -167,10 +167,10 @@ class ProtectionBonuses:
                                         self.maxOtherBonus = otherBonus
 
     def printOptimalBonusSet(self):
-        print("Bonus auf RK:   +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(self.maxBonus,
+        print("AC Bonus:   +{0:<2d}    Surplus: {1:}gp".format(self.maxBonus,
                                                                                  math.floor(self.maxSurplus)))
-        print("Resistenzbonus: +{0:<2d}".format(self.saveBonus))
-        print("Rüstungsbonus:  +{0:<2d}    Schildbonus: +{1:<2d}".format(self.maxArmorBonus, self.maxShieldBonus))
-        print("Natürlicher RB: +{0:<2d}    Ablenkbonus: +{1:<2d}".format(self.maxNaturalArmorBonus,
+        print("Cloak of Resistance +{0:<2d}".format(self.saveBonus))
+        print("Magic Armor +{0:<2d}    Magic Shield +{1:<2d}".format(self.maxArmorBonus, self.maxShieldBonus))
+        print("Amulet of Natural Armor +{0:<2d}    Ring of Protection +{1:<2d}".format(self.maxNaturalArmorBonus,
                                                                          self.maxDeflectionBonus))
-        print("Anderer Bonus:  +{0:<2d}".format(self.maxOtherBonus))
+        print("Ring of Luck +{0:<2d}".format(self.maxOtherBonus))

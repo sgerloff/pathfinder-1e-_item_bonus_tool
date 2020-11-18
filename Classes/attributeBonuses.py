@@ -28,4 +28,4 @@ class AttributeBonuses:
         self.maxSurplus = character.getMagicBudget() - self.getPrice(self.maxBonus, self.__ATTRIBUTE_BONUS_FACTOR)
 
     def printOptimalBonus(self, character):
-        print("Attributbonus:  +{0:<2d}    Überschüssiges Gold: +{1:<2d}".format(self.maxBonus, math.floor(self.maxSurplus)))
+        print("Belt/Circlet of ... +{0:<2d}    Surplus: {1:}gp".format(self.maxBonus, math.floor(self.maxSurplus)))

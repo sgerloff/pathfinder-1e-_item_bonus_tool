@@ -35,7 +35,11 @@ class WeaponBonus:
         self.maxSurplus = math.floor(weaponBudget - self.maxBonus * self.maxBonus * self.__WEAPON_BONUS_FACTOR)
 
     def _getWeaponBudget(self, character):
-        return character.getWeaponBudget() - self.__WEAPON_MASTERWORK
+        budget = character.getWeaponBudget() - self.__WEAPON_MASTERWORK
+        if budget > 0:
+            return character.getWeaponBudget() - self.__WEAPON_MASTERWORK
+        else:
+            return character.getWeaponBudget()
 
     def printOptimalBonus(self):
-        print("Waffenbonus:    +{0:<2d}    Überschüssiges Gold: {1:<10d}".format(self.maxBonus, self.maxSurplus))
+        print("Magic Weapon +{0:<2d}    Surplus: {1:}gp".format(self.maxBonus, self.maxSurplus))
