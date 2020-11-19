@@ -1,3 +1,4 @@
+import sys
 import random
 from Classes.warriorNPC import WarriorNPC
 
@@ -24,32 +25,23 @@ def randomRangedWarrior(level):
     weapons = ["bow", "longbow", "crossbow", "heavycrossbow"]
     return WarriorNPC(level, "range", random.choice(races), "light", "", random.choice(weapons))
 
-print("")
-print("Melee 1")
-warriorR = randomMeleeWarrior(7)
-warriorR.heroic = True
-warriorR.printSummary()
-
-print("")
-print("Melee 2")
-warriorR = randomMeleeWarrior(7)
-warriorR.printSummary()
-
-print("")
-print("Melee 3")
-warriorR = randomMeleeWarrior(7)
-warriorR.printSummary()
-
-print("")
-print("Melee 4")
-warriorR = randomMeleeWarrior(7)
-warriorR.printSummary()
-print("")
-print("Ranged 5")
-warriorR = randomRangedWarrior(7)
-warriorR.printSummary()
-print("")
-print("Ranged 6")
-warriorR = randomRangedWarrior(7)
-warriorR.printSummary()
-    
+if len(sys.argv) == 3:
+    number_of_warriors = int(sys.argv[1])
+    level = int(sys.argv[2])
+    npc_type = ["melee", "range"]
+    for i in range(number_of_warriors):
+        random_type = random.choice(npc_type)
+        if random_type == "melee":
+            print("{}. NPC:\n".format(i+1))
+            warrior = randomMeleeWarrior(level)
+            warrior.printSummary()
+            print("\n")
+        elif random_type == "range":
+            print("{}. NPC:\n".format(i+1))
+            ranger = randomRangedWarrior(level)
+            ranger.printSummary()
+            print("\n")
+        else:
+            print("Something went very wrong!")
+else:
+    print("Usage: {} <number_of_warriors> <npc_level>".format(sys.argv[0]))
