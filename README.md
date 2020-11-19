@@ -16,7 +16,7 @@ and you will be greeted with a graphic user interface:
 
 * (1) Next chose the which kind of armor is available to the character, according to armor proficiencies and slots available. Note that natural armor bonus, deflection bonus and similar refer to the usual default items (amulet of natural armor, ring of protection), but can in principle also be provided by other magic items or abilities. Since they do not stack, you should check them off in some cases.
 
-* (2) Finally, your choices will generate a list of suggested items, as well as state remaining gold. The total bonus to the AC is listed as a quick reference for DM's to gauge appropriate attack modifiers for potential monster and encounters.  
+* (2) Finally, your choices will generate a list of suggested items, as well as state remaining gold. Note, the Belt/Circlet of ... reference to attribute increasing magic items, such as Belt of Giant Strength. The total bonus to the AC is listed as a quick reference for DM's to gauge appropriate attack modifiers for potential monster and encounters.  
 
 # Basic Usage from Command Line
 If you prefer to get the output from the command line use for example
